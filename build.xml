@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="Halcyon - compile, test, distribute, and run" default="all">
+
+	<property name="source.dir" value="src" />
+	<property name="test.dir" value="test" />
+	<property name="lib.test.dir" value="lib-test" />
+	<property name="build.dir" value="classes" />
+	<property name="dist.dir" value="dist" />
+
+	<target name="init">
+		<delete dir="${build.dir}" />
+		<delete dir="${dist.dir}" />
+
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}" />
+	</target>
+
+	<target name="compile" depends="init">
+		<javac includeantruntime="false" srcdir="${source.dir}" destdir="${build.dir}" />
+	</target>
+	
+	<target name="compile-test" depends="compile">
+		<javac includeantruntime="false" srcdir="${test.dir}" destdir="${build.dir}" classpath="${lib.test.dir}\junit.jar" />
+	</target>
+
+	<target name="test" depends="compile-test">
+		<junit>
+			<classpath>
+				<pathelement location="${project.class.path}" />
+				<pathelement location="${build.dir}" />
+				<pathelement path="${java.class.path}" />
+			</classpath>
+
+			<test name="com.helo478.halcyon.SimpleUserInterfaceTest" haltonfailure="no" outfile="result">
+				<formatter type="plain" />
+				<formatter type="xml" />
+			</test>
+		</junit>
+
+	</target>
+
+	<target name="all" depends="test" />
+
+</project>
